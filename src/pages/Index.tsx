@@ -87,7 +87,8 @@ const SPECS_ROWS = [
   { param: "Толщина стенки", value: "3 – 45 мм" },
   { param: "Скорость резки", value: "10 – 70 см/мин" },
   { param: "Типы резки", value: "Газовая (сталь), Плазменная (сталь, нержавейка)" },
-  { param: "Автономность (АКБ)", value: "2 – 3 часа" },
+  { param: "Автономность Li-Ion (≥0°C)", value: "2 – 3 часа" },
+  { param: "Автономность LiTi (−40°C)", value: "30 – 50 мин" },
   { param: "Пульт ДУ", value: "433 МГц (WiFi)" },
   { param: "Питание от сети", value: "220В через блок питания" },
   { param: "Реле для резака", value: "Встроенное" },
@@ -122,7 +123,7 @@ const INDUSTRIES = [
   {
     icon: "Flame",
     title: "Нефтегаз",
-    desc: "Строительство и ремонт магистральных трубопроводов. Работа в полевых условиях, вахтовый режим, экстремальные климатические условия.",
+    desc: "Строительство и ремонт магистральных трубопроводов. Работа в трассовых условиях и на площадочных объектах, экстремальные климатические условия.",
     tags: ["Магистральные трубопроводы", "Полевые работы", "Арктика"],
   },
   {
@@ -178,11 +179,13 @@ function useIntersection(threshold = 0.15) {
 function Navbar({ activeSection }: { activeSection: string }) {
   const [open, setOpen] = useState(false);
   const links = [
-    { id: "products", label: "Продукция" },
-    { id: "belts", label: "Пояса" },
-    { id: "technologies", label: "Технологии" },
-    { id: "industries", label: "Отрасли" },
     { id: "about", label: "О компании" },
+    { id: "products", label: "Продукция" },
+    { id: "specs", label: "Характеристики" },
+    { id: "belts", label: "Бандажи" },
+    { id: "technologies", label: "Технологии" },
+    { id: "safety", label: "Безопасность" },
+    { id: "industries", label: "Отрасли" },
     { id: "contacts", label: "Контакты" },
   ];
 
@@ -203,11 +206,11 @@ function Navbar({ activeSection }: { activeSection: string }) {
             <Icon name="CircleDot" size={16} className="text-white" />
           </div>
           <div>
-            <div className="font-oswald text-white font-semibold text-base leading-none tracking-wider">
-              САТУРН
+            <div className="font-oswald text-white font-bold text-base leading-none tracking-wider">
+              МАЛАЯ МЕХАНИЗАЦИЯ
             </div>
             <div className="text-xs text-slate-500 font-mono leading-none mt-0.5">
-              МАЛАЯ МЕХАНИЗАЦИЯ
+              орбитальное оборудование · СПб
             </div>
           </div>
         </a>
@@ -338,7 +341,9 @@ function HeroSection() {
               РЕЗКА ТРУБ
             </span>
             <br />
-            НОВОГО УРОВНЯ
+            <span style={{ fontSize: "clamp(1.4rem, 3vw, 2.2rem)", color: "#94a3b8", fontWeight: 400 }}>
+              10–70 см/мин · НОВОГО УРОВНЯ
+            </span>
           </h1>
 
           <p
@@ -628,7 +633,7 @@ function SpecsSection() {
 
   return (
     <section
-      id="belts"
+      id="specs"
       ref={ref}
       className="py-24 relative"
       style={{ background: "linear-gradient(180deg, #070e1f 0%, #050c1a 100%)" }}
@@ -641,102 +646,138 @@ function SpecsSection() {
         }}
       />
 
-      <div className="relative max-w-7xl mx-auto px-4 md:px-8 grid md:grid-cols-2 gap-16 items-start">
+      <div className="relative max-w-7xl mx-auto px-4 md:px-8">
         <div
-          className={`transition-all duration-700 ${visible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-8"}`}
+          className={`transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
         >
           <div className="feature-tag mb-4 inline-flex">
             <Icon name="Cpu" size={11} />
             Технические данные
           </div>
           <h2
-            className="font-oswald font-bold text-white section-title mb-8"
-            style={{ fontSize: "clamp(1.8rem, 3vw, 2.5rem)" }}
+            className="font-oswald font-bold text-white section-title mb-10"
+            style={{ fontSize: "clamp(2rem, 4vw, 3rem)" }}
           >
             ХАРАКТЕРИСТИКИ
           </h2>
+        </div>
 
+        <div className="grid md:grid-cols-2 gap-6">
           <div
-            className="rounded-xl overflow-hidden gradient-border"
+            className={`rounded-xl overflow-hidden gradient-border transition-all duration-700 delay-100 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
             style={{ background: "rgba(10,22,40,0.8)" }}
           >
-            {SPECS_ROWS.map((row, i) => (
+            {SPECS_ROWS.slice(0, Math.ceil(SPECS_ROWS.length / 2)).map((row, i) => (
               <div
                 key={i}
                 className="flex items-center justify-between px-5 py-3.5"
                 style={{
-                  borderBottom:
-                    i < SPECS_ROWS.length - 1
-                      ? "1px solid rgba(255,255,255,0.04)"
-                      : undefined,
-                  background:
-                    i % 2 === 0 ? "transparent" : "rgba(255,255,255,0.01)",
+                  borderBottom: "1px solid rgba(255,255,255,0.04)",
+                  background: i % 2 === 0 ? "transparent" : "rgba(255,255,255,0.01)",
                 }}
               >
                 <span className="text-slate-400 text-sm">{row.param}</span>
-                <span className="text-white text-sm font-medium text-right ml-4">
-                  {row.value}
-                </span>
+                <span className="text-white text-sm font-medium text-right ml-4">{row.value}</span>
+              </div>
+            ))}
+          </div>
+          <div
+            className={`rounded-xl overflow-hidden gradient-border transition-all duration-700 delay-200 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+            style={{ background: "rgba(10,22,40,0.8)" }}
+          >
+            {SPECS_ROWS.slice(Math.ceil(SPECS_ROWS.length / 2)).map((row, i) => (
+              <div
+                key={i}
+                className="flex items-center justify-between px-5 py-3.5"
+                style={{
+                  borderBottom: i < SPECS_ROWS.slice(Math.ceil(SPECS_ROWS.length / 2)).length - 1 ? "1px solid rgba(255,255,255,0.04)" : undefined,
+                  background: i % 2 === 0 ? "transparent" : "rgba(255,255,255,0.01)",
+                }}
+              >
+                <span className="text-slate-400 text-sm">{row.param}</span>
+                <span className="text-white text-sm font-medium text-right ml-4">{row.value}</span>
               </div>
             ))}
           </div>
         </div>
+      </div>
+    </section>
+  );
+}
 
+function BeltsSection() {
+  const { ref, visible } = useIntersection();
+
+  return (
+    <section
+      id="belts"
+      ref={ref}
+      className="py-24 relative"
+      style={{ background: "linear-gradient(180deg, #050c1a 0%, #070e1f 100%)" }}
+    >
+      <div
+        className="absolute left-0 top-0 w-1/2 h-full opacity-8 pointer-events-none"
+        style={{
+          background: "radial-gradient(ellipse at left, #f97316 0%, transparent 70%)",
+        }}
+      />
+
+      <div className="relative max-w-7xl mx-auto px-4 md:px-8">
         <div
-          className={`transition-all duration-700 delay-200 ${visible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"}`}
+          className={`mb-12 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
         >
           <div className="orange-tag mb-4 inline-flex">
             <Icon name="Link" size={11} />
             Направляющие пояса
           </div>
           <h2
-            className="font-oswald font-bold text-white section-title mb-4"
-            style={{ fontSize: "clamp(1.8rem, 3vw, 2.5rem)" }}
+            className="font-oswald font-bold text-white section-title"
+            style={{ fontSize: "clamp(2rem, 4vw, 3rem)" }}
           >
             БАНДАЖИ
           </h2>
-          <p className="text-slate-400 text-sm mb-8 leading-relaxed">
+          <p className="text-slate-400 mt-6 max-w-2xl text-lg">
             Направляющие пояса для собственных машин серии САТУРН, а также для
             совместимых зарубежных и отечественных орбитальных машин.
             Изготовление нестандартных типоразмеров под заказ.
           </p>
+        </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-8">
-            {BELTS.map((b, i) => (
+        <div className="grid sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-10">
+          {BELTS.map((b, i) => (
+            <div
+              key={i}
+              className={`gradient-border rounded-xl p-5 text-center card-hover transition-all duration-500 ${visible ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}
+              style={{
+                background: "rgba(10,22,40,0.8)",
+                transitionDelay: `${i * 0.06}s`,
+                border: b.range === "Под заказ" ? "1px solid rgba(249,115,22,0.3)" : undefined,
+              }}
+            >
               <div
-                key={i}
-                className={`gradient-border rounded-lg p-4 text-center transition-all duration-500 ${visible ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}
-                style={{
-                  background: "rgba(10,22,40,0.8)",
-                  transitionDelay: `${i * 0.05 + 0.3}s`,
-                  border:
-                    b.range === "Под заказ"
-                      ? "1px solid rgba(249,115,22,0.3)"
-                      : undefined,
-                }}
+                className={`font-oswald font-bold text-sm mb-1 ${b.range === "Под заказ" ? "text-orange-400" : "text-white"}`}
               >
-                <div
-                  className={`font-oswald font-bold text-sm mb-1 ${b.range === "Под заказ" ? "text-orange-400" : "text-white"}`}
-                >
-                  {b.range}
-                </div>
-                <div className="text-slate-500 text-xs font-mono">{b.dn}</div>
+                {b.range}
               </div>
-            ))}
-          </div>
+              <div className="text-slate-500 text-xs font-mono">{b.dn}</div>
+            </div>
+          ))}
+        </div>
 
-          <div>
-            <div className="text-slate-500 text-xs font-mono uppercase tracking-wider mb-3">
-              Совместимость с оборудованием:
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {COMPATIBLE.map((c, i) => (
-                <span key={i} className="feature-tag text-xs">
-                  <Icon name="CheckCircle" size={10} />
-                  {c}
-                </span>
-              ))}
-            </div>
+        <div
+          className={`gradient-border rounded-xl p-6 transition-all duration-700 delay-300 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
+          style={{ background: "rgba(10,22,40,0.8)" }}
+        >
+          <div className="text-slate-500 text-xs font-mono uppercase tracking-wider mb-4">
+            Совместимость с оборудованием:
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {COMPATIBLE.map((c, i) => (
+              <span key={i} className="feature-tag text-xs">
+                <Icon name="CheckCircle" size={10} />
+                {c}
+              </span>
+            ))}
           </div>
         </div>
       </div>
@@ -765,8 +806,8 @@ function TechnologiesSection() {
     },
     {
       icon: "Battery",
-      title: "Литий-титановый АКБ",
-      desc: "Уникальная химия LiTi сохраняет ёмкость при −40°C. 2–3 часа автономной работы на одном заряде. Горячая замена (ЭНЦЕЛАД).",
+      title: "Аккумуляторные системы",
+      desc: "Li-Ion АКБ: 2–3 часа работы при положительной температуре. LiTi АКБ: 30–50 мин при −40°C — сохраняет работоспособность в арктических условиях. Горячая замена (ЭНЦЕЛАД).",
     },
     {
       icon: "Wrench",
@@ -872,6 +913,117 @@ function TechnologiesSection() {
               </p>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function SafetySection() {
+  const { ref, visible } = useIntersection();
+
+  const items = [
+    {
+      icon: "ShieldCheck",
+      title: "Оператор вне опасной зоны",
+      desc: "Монтажник управляет процессом с пульта ДУ — не нужно находиться под трубой или в стеснённом пространстве рядом с резаком.",
+    },
+    {
+      icon: "Droplets",
+      title: "Защита от брызг металла",
+      desc: "При работе в стеснённых условиях и под трубой брызги расплавленного металла летят не на людей — оператор находится на безопасном расстоянии.",
+    },
+    {
+      icon: "Zap",
+      title: "Не нужно тянуть 220В",
+      desc: "Аккумуляторное питание полностью исключает риск поражения электрическим током при работе в условиях влажности, под трубой и на грунте.",
+    },
+    {
+      icon: "Timer",
+      title: "Сокращение времени резки",
+      desc: "Постоянная скорость орбитальной машины против непредсказуемых движений при ручной резке — время на рез сокращается в разы.",
+    },
+    {
+      icon: "Scan",
+      title: "Чистота и равномерность реза",
+      desc: "Машина обеспечивает идеально ровный рез без отклонений. При ручной резке неравномерность неизбежна — это ведёт к переделкам и браку.",
+    },
+    {
+      icon: "Eye",
+      title: "Контроль процесса, а не машинки",
+      desc: "При ручной резке монтажник вынужден следить за движением резака. С орбитальной машиной он контролирует качество реза и параметры процесса.",
+    },
+    {
+      icon: "HeartPulse",
+      title: "Снижение травматизма",
+      desc: "Исключён прямой контакт оператора с резаком и зоной реза. Особенно критично при работе в стеснённых условиях: колодцах, траншеях, под трубой.",
+    },
+    {
+      icon: "Gauge",
+      title: "Удобство управления",
+      desc: "Пульт ДУ позволяет изменять скорость и направление движения машины одной рукой, находясь в удобном положении — без физического напряжения.",
+    },
+  ];
+
+  return (
+    <section
+      id="safety"
+      ref={ref}
+      className="py-24 relative overflow-hidden"
+      style={{ background: "linear-gradient(180deg, #070e1f 0%, #050c1a 100%)" }}
+    >
+      <div className="absolute inset-0 grid-bg opacity-20" />
+      <div
+        className="absolute right-0 top-1/2 -translate-y-1/2 w-1/2 h-3/4 opacity-8 pointer-events-none"
+        style={{ background: "radial-gradient(ellipse at right, #1a5ce8 0%, transparent 65%)" }}
+      />
+
+      <div className="relative max-w-7xl mx-auto px-4 md:px-8">
+        <div
+          className={`mb-16 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+        >
+          <div className="feature-tag mb-4 inline-flex">
+            <Icon name="ShieldCheck" size={11} />
+            Охрана труда
+          </div>
+          <h2
+            className="font-oswald font-bold text-white section-title"
+            style={{ fontSize: "clamp(2rem, 4vw, 3rem)" }}
+          >
+            БЕЗОПАСНОСТЬ
+          </h2>
+          <p className="text-slate-400 mt-6 max-w-2xl text-lg">
+            Аккумуляторная орбитальная машина с пультом ДУ кардинально меняет
+            условия труда — оператор работает быстрее, комфортнее и без риска
+            для здоровья.
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+          {items.map((item, i) => (
+            <div
+              key={i}
+              className={`gradient-border card-hover rounded-xl p-6 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
+              style={{
+                background: "rgba(10,22,40,0.85)",
+                transitionDelay: `${i * 0.06}s`,
+              }}
+            >
+              <div
+                className="w-10 h-10 rounded-lg flex items-center justify-center mb-4"
+                style={{
+                  background: "linear-gradient(135deg, rgba(26,92,232,0.2), rgba(59,130,246,0.08))",
+                  border: "1px solid rgba(59,130,246,0.25)",
+                }}
+              >
+                <Icon name={item.icon as IName} size={18} style={{ color: "#3b82f6" }} />
+              </div>
+              <h3 className="font-oswald text-white font-semibold text-base mb-2 leading-tight">
+                {item.title}
+              </h3>
+              <p className="text-slate-400 text-sm leading-relaxed">{item.desc}</p>
+            </div>
+          ))}
         </div>
       </div>
     </section>
@@ -1456,11 +1608,13 @@ export default function Index() {
   useEffect(() => {
     const sections = [
       "hero",
+      "about",
       "products",
+      "specs",
       "belts",
       "technologies",
+      "safety",
       "industries",
-      "about",
       "contacts",
     ];
     const handleScroll = () => {
@@ -1481,11 +1635,13 @@ export default function Index() {
     <div className="min-h-screen" style={{ background: "#050c1a" }}>
       <Navbar activeSection={activeSection} />
       <HeroSection />
+      <AboutSection />
       <ProductsSection />
       <SpecsSection />
+      <BeltsSection />
       <TechnologiesSection />
+      <SafetySection />
       <IndustriesSection />
-      <AboutSection />
       <ContactsSection />
       <Footer />
     </div>
