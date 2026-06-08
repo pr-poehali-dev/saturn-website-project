@@ -21,7 +21,8 @@ const MODELS = [
       { icon: "Sliders", label: "Потенциометр-энкодер" },
       { icon: "Plug", label: "Сеть 220В через БП" },
       { icon: "Hand", label: "Ручной привод" },
-      { icon: "Thermometer", label: "Стандартные условия" },
+      { icon: "Zap", label: "Реле плазменного резака" },
+      { icon: "Thermometer", label: "До 0°C" },
     ],
     highlight: true,
   },
@@ -38,6 +39,7 @@ const MODELS = [
       { icon: "Sliders", label: "Потенциометр-энкодер" },
       { icon: "Plug", label: "Сеть 220В через БП" },
       { icon: "Hand", label: "Ручной привод" },
+      { icon: "Zap", label: "Реле плазменного резака" },
       { icon: "Thermometer", label: "До −40°C" },
     ],
     highlight: false,
@@ -48,13 +50,14 @@ const MODELS = [
     subtitle: "Для мобильных бригад",
     badge: "МОБИЛЬНЫЙ",
     badgeColor: "blue",
-    desc: "Съёмный аккумулятор по принципу шуруповёрта — горячая замена на объекте без простоя. Запас АКБ = непрерывная работа.",
+    desc: "Съёмный аккумулятор по принципу шуруповёрта — горячая замена без простоя. Стандарт: Li-Ion (до 0°C). Опция: LiTi (до −40°C) по заявке.",
     features: [
-      { icon: "Battery", label: "Съёмный АКБ 24В" },
+      { icon: "Battery", label: "Съёмный АКБ 24В (Li-Ion/LiTi)" },
       { icon: "Wifi", label: "WiFi пульт ДУ 433 МГц" },
       { icon: "Sliders", label: "Потенциометр-энкодер" },
       { icon: "Plug", label: "Сеть 220В через БП" },
       { icon: "X", label: "Без ручного привода" },
+      { icon: "Zap", label: "Реле плазменного резака" },
       { icon: "RefreshCw", label: "Горячая замена АКБ" },
     ],
     highlight: false,
@@ -71,6 +74,7 @@ const MODELS = [
       { icon: "X", label: "Без WiFi пульта" },
       { icon: "X", label: "Без энкодера" },
       { icon: "X", label: "Без БП 220В" },
+      { icon: "X", label: "Без реле резака" },
       { icon: "Hand", label: "Только ручной привод" },
       { icon: "CircleDollarSign", label: "Минимальная стоимость" },
     ],
@@ -94,12 +98,13 @@ const SPECS_ROWS = [
 ];
 
 const COMPARE_COLS = [
-  { key: "battery", label: "АКБ", pro: "Li-Ion\nвстроенный", titan: "LiTi\n−40°C", enc: "Съёмный", mimas: "—" },
+  { key: "battery", label: "АКБ", pro: "Li-Ion\nвстроенный", titan: "LiTi\n−40°C", enc: "Съёмный\nLi-Ion/LiTi", mimas: "—" },
   { key: "wifi", label: "WiFi пульт", pro: "✓", titan: "✓", enc: "✓", mimas: "—" },
   { key: "encoder", label: "Энкодер", pro: "✓", titan: "✓", enc: "✓", mimas: "—" },
   { key: "power", label: "220В сеть", pro: "✓", titan: "✓", enc: "✓", mimas: "—" },
   { key: "manual", label: "Ручной привод", pro: "✓", titan: "✓", enc: "—", mimas: "✓" },
-  { key: "temp", label: "Мин. температура", pro: "0°C", titan: "−40°C", enc: "0°C", mimas: "0°C" },
+  { key: "relay", label: "Реле резака", pro: "✓", titan: "✓", enc: "✓", mimas: "—" },
+  { key: "temp", label: "Мин. температура", pro: "0°C", titan: "−40°C", enc: "0°C / −40°C*", mimas: "—" },
 ];
 
 const BELTS = [
@@ -609,6 +614,9 @@ function ProductsSection() {
               </tbody>
             </table>
           </div>
+          <p className="text-slate-600 text-xs mt-3 font-mono">
+            * САТУРН-ЭНЦЕЛАД: стандартная комплектация до 0°C (Li-Ion АКБ). Работа до −40°C — при заказе LiTi аккумулятора.
+          </p>
         </div>
       </div>
     </section>
